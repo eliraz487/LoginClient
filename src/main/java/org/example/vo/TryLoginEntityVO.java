@@ -18,5 +18,4 @@ public class TryLoginEntityVO implements Serializable {
 
     private String password="";
 
-
 }

@@ -1,5 +1,6 @@
 package org.example;
 
+import com.google.gson.Gson;
 import org.example.vo.TryLoginEntityVO;
 
 import java.io.IOException;
@@ -8,28 +9,27 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
-public class Login {
+public class LoginClient {
 
     private static final String URL = "http://localhost:8080/Login/tryLogin";
 
-    public static String tryLogin(TryLoginEntityVO tryLoginEntityVO) {
+    public static String tryLogin(TryLoginEntityVO tryLoginEntityVO) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest httpRequest = null;
         String id;
-        try {
+        Gson gson =new Gson();
+        String json =gson.toJson(tryLoginEntityVO);
+
             httpRequest = HttpRequest.newBuilder()
                     .uri(new URI(URL))
-                    .GET().build();
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
+                    .build();
             HttpClient httpClient = HttpClient.newHttpClient();
             HttpResponse<String> postResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            id = postResponse.body();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            id = postResponse.body().toString();
+
         return id;
     }
 }

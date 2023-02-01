@@ -7,8 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class UsersEntityUpdateVO extends UsersEntityVO implements Serializable {
+public class UsersEntityUpdateVO  implements Serializable {
 
     private TryLoginEntityVO tryLogin;
 
